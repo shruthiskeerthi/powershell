@@ -1,0 +1,62 @@
+
+$users = Get-Content -Path 'C:\Users\sskeerth\Downloads\ucmsuserdetails.txt'
+$file = 'C:\Users\sskeerth\Downloads\machine_status.txt'
+$tab="`t"
+#$delimit=$tab+","+$tab
+$delimit=$tab
+
+$machine = @{} 
+foreach($user in $users){
+    $macstat = Get-BrokerSession -UserName $user | Select-Object SessionState, MachineName, ClientVersion
+    $mname = $macstat.MachineName
+    $mversion = $macstat.ClientVersion
+    $macstat = $macstat.SessionState  
+    if ($macstat -contains "Active"){
+        $machine["$user"] = $macstat
+        Write-Output "$user is now active in $mname, sending email..."
+        $mac="$user is now active in $mname and $mversion"
+        Send-MailMessage `
+            -From 'shuthi-keerthi@imail2.org' `
+            -To 'shruthi-keerthi.s@dxc.com' `
+            -Subject $mac `
+            -SmtpServer 'smtp.co.ihc.com'`
+            -Body $mac 
+    }else{
+        $machine["$user"] = "NOT_ACTIVE"
+    }
+ }
+
+$users_count=$users.Count
+$run = $true
+while($run){
+    $active_count=0
+    Write-Output "machine_info $delimit status" | Out-File $file
+    foreach($user in $users){
+        $status = $machine["$user"]
+        if ($status -notcontains "Active"){
+            Write-Output "$user Not Active so checking again..."
+            $macstat = Get-BrokerSession -UserName $user | Select-Object SessionState, MachineName
+            $mname = $macstat.MachineName
+            $macstat = $macstat.SessionState
+            if ($macstat -contains "Active"){
+               Write-Output "$user is now active in $mname, sending email..."
+                $machine["$user"] = $macstat
+                $mac="$user is now active on $mname."
+                Send-MailMessage `
+                   -From 'shuthi-keerthi@imail2.org' `
+                   -To 'shruthi-keerthi.s@dxc.com' `
+                   -Subject $mac `
+                   -SmtpServer 'smtp.co.ihc.com'`
+                   -Body $mac
+               }           
+        }else{
+            $active_count = $active_count +1
+        }
+        $file_content= $user + $delimit +$delimit + $status
+        Add-Content -Path $file -Value $file_content
+    }
+    if($active_count -eq $users_count){
+        $run=$false
+    }
+    Start-Sleep -Seconds 30
+}
