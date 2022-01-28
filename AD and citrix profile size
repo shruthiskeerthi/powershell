@@ -1,0 +1,64 @@
+<# powershell script for getting citrix profile size for the users and pass that to AD and find the user ad status>
+<# AD>
+$servers = (Get-ADForest).Domains
+$server_count = $servers.Count
+$users=get-content 'C:\Users\sskeerth\Desktop\Profile_details.txt'
+$file = 'C:\Users\sskeerth\Desktop\user_status.csv'
+$tab="`t"
+#$delimit=$tab+","+$tab
+$delimit=$tab
+Write-Output "user_info $delimit status" | Out-File $file
+foreach($user in $users)
+    {
+    $match_count=0
+    foreach($server in $servers)
+    {
+        $pos = $user.LastIndexOf("\")
+        $rightPart = $user.Substring($pos+1)
+
+        $pos= $rightPart.IndexOf(".")
+        if($pos -ne -1){
+            $user1=$rightPart.Substring(0,$pos)
+            if([bool] (Get-ADUser -Filter {SamAccountName -eq $user1} -Server $server))
+            {
+                #Write-Output "user $user1 exists in $server"
+                $result = Get-ADUser -Filter {SamAccountName -eq $user1} -Server $server| Select-Object -Property @{n='user';e={$_.SamAccountName}},Enabled
+                $final_result = $user + $delimit +$result
+                Add-Content -Path $file -Value $final_result
+                $match_count = $match_count+1
+            }else{
+                #Write-Output "user $user1 does not exists in $server"
+                $user1=$rightPart.Substring(0, $rightPart.IndexOf('.') + 1 + $rightPart.Substring($rightPart.IndexOf('.') + 1).IndexOf('.'))
+                if([bool] (Get-ADUser -Filter {SamAccountName -eq $user1} -Server $server)) 
+                {
+                    #Write-Output "user $user1 exists in $server"
+                    $result = Get-ADUser -Filter {SamAccountName -eq $user1} -Server $server| Select-Object -Property SamAccountName,Enabled
+                    $final_result = $user + $delimit +$result
+                    Add-Content -Path $file -Value $final_result
+                    $match_count = $match_count+1
+                }else{
+                    #Write-Output "user $user1 does not exists in $server"
+                    #$result = "DOES NOT EXIST IN $server"
+                    #$final_result = $user + "`t`t" +$result
+                    #Add-Content -Path $file -Value $final_result
+                }
+        } 
+        }
+    }
+    if ($match_count -eq 0){
+        #Write-Output "user $user does not exists in any given servers"
+        $final_result = $user + $delimit + "DOES NOT EXIST IN ANY GIVEN SERVERS"
+        Add-Content -Path $file -Value $final_result
+    }
+}
+Write-Output "check the file for the report : $file"
+
+
+<# for citrix>
+
+ gci -force 'C:\Users' -ErrorAction SilentlyContinue | ? { $_ -is [io.directoryinfo] } | % {
+      $len = 0
+      gci -recurse -force $_.fullname -ErrorAction SilentlyContinue | % { $len += $_.length }
+      $_.name } | Out-File -FilePath 'C:\Users\sskeerth\Downloads\user name.txt'
+
+      Write-Output "check file 'C:\Users\sskeerth\Downloads\user name.txt' for output"
