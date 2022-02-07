@@ -1,0 +1,18 @@
+Sub Macros1()
+'
+' Macros1 Macro
+'
+
+'
+    Dim myRange As Range
+    Set myRange = Range("A1").CurrentRegion
+    Selection.AutoFilter
+    myRange.AutoFilter Field:=4, Criteria1:="4 - Low"
+    Set myRange1 = Range("A1").CurrentRegion
+    myRange1.Select
+    Selection.Copy
+    Sheets.Add After:=ActiveSheet
+    ActiveSheet.Paste
+    Worksheets("Sheet1").Activate
+    ActiveSheet.AutoFilterMode = False
+End Sub
