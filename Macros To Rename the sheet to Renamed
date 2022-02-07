@@ -1,0 +1,10 @@
+1.get the active sheet name 
+2.and pass it to sheets name and mention the new name
+
+Sub Renamethis()
+
+Actives = ActiveSheet.Name
+Sheets(Actives).Name = "Renamed"
+
+End Sub
+
