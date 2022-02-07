@@ -1,0 +1,86 @@
+exact working code for dynamic range pivot with autofilter
+
+Sub Macros5()
+'
+
+'
+    
+    Dim myRange As Range, shtSrc As Worksheet
+    Set myRange = Range("A1").CurrentRegion
+    
+    Selection.AutoFilter
+    myRange.AutoFilter Field:=4, Criteria1:="4 - Low"
+    Set myRange1 = Range("A1").CurrentRegion
+    myRange1.Select
+    Selection.Copy
+    Sheets.Add After:=ActiveSheet
+    R = ActiveSheet.Name
+    Sheets(R).Name = "Raw"
+    
+    ActiveSheet.Paste
+     Application.CutCopyMode = False
+     Set shtSrc = Sheets("Raw")
+    'Set myRange2 = Range("A1").CurrentRegion
+    Sheets.Add.Name = "Pivots"
+    
+'works till here
+ 
+
+   
+    
+    ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
+        shtSrc.Range("A1").CurrentRegion).CreatePivotTable TableDestination:= _
+        "Pivots!R3C1", TableName:="PivotTable1"
+        
+    Sheets("Pivots").Select
+    Cells(3, 1).Select
+    With ActiveSheet.PivotTables("PivotTable1")
+        .ColumnGrand = True
+        .HasAutoFormat = True
+        .DisplayErrorString = False
+        .DisplayNullString = True
+        .EnableDrilldown = True
+        .ErrorString = ""
+        .MergeLabels = False
+        .NullString = ""
+        .PageFieldOrder = 2
+        .PageFieldWrapCount = 0
+        .PreserveFormatting = True
+        .RowGrand = True
+        .SaveData = True
+        .PrintTitles = False
+        .RepeatItemsOnEachPrintedPage = True
+        .TotalsAnnotation = False
+        .CompactRowIndent = 1
+        .InGridDropZones = False
+        .DisplayFieldCaptions = True
+        .DisplayMemberPropertyTooltips = False
+        .DisplayContextTooltips = True
+        .ShowDrillIndicators = True
+        .PrintDrillIndicators = False
+        .AllowMultipleFilters = False
+        .SortUsingCustomLists = True
+        .FieldListSortAscending = False
+        .ShowValuesRow = False
+        .CalculatedMembersInFilters = False
+        .RowAxisLayout xlCompactRow
+    End With
+    With ActiveSheet.PivotTables("PivotTable1").PivotCache
+        .RefreshOnFileOpen = False
+        .MissingItemsLimit = xlMissingItemsDefault
+    End With
+    ActiveSheet.PivotTables("PivotTable1").RepeatAllLabels xlRepeatLabels
+    ActiveSheet.PivotTables("PivotTable1").AddDataField ActiveSheet.PivotTables( _
+        "PivotTable1").PivotFields("Assigned to"), "Count of Assigned to", xlCount
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("Assigned to")
+        .Orientation = xlRowField
+        .Position = 1
+    End With
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("Priority")
+        .Orientation = xlColumnField
+        .Position = 1
+    End With
+    Range("A4").Select
+    Worksheets("Sheet1").Activate
+    ActiveSheet.AutoFilterMode = False
+End Sub
