@@ -1,0 +1,61 @@
+ Sub Testing2()
+ 
+    Dim myRange As Range, shtSrc As Worksheet
+    Set myRange = Range("A1").CurrentRegion
+    
+    Worksheets("raw").Activate
+    Sheets.Add.Name = "AsMonth"
+    Set shtSrc = Sheets("raw")
+    
+    ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
+        shtSrc.Range("A1").CurrentRegion, Version:=7).CreatePivotTable TableDestination:= _
+        "'AsMonth'!R3C1", TableName:="PivotTable1", DefaultVersion:=7
+    Sheets("AsMonth").Select
+    Cells(3, 1).Select
+    With ActiveSheet.PivotTables("PivotTable1")
+        .ColumnGrand = True
+        .HasAutoFormat = True
+        .DisplayErrorString = False
+        .DisplayNullString = True
+        .EnableDrilldown = True
+        .ErrorString = ""
+        .MergeLabels = False
+        .NullString = ""
+        .PageFieldOrder = 2
+        .PageFieldWrapCount = 0
+        .PreserveFormatting = True
+        .RowGrand = True
+        .SaveData = True
+        .PrintTitles = False
+        .RepeatItemsOnEachPrintedPage = True
+        .TotalsAnnotation = False
+        .CompactRowIndent = 1
+        .InGridDropZones = False
+        .DisplayFieldCaptions = True
+        .DisplayMemberPropertyTooltips = False
+        .DisplayContextTooltips = True
+        .ShowDrillIndicators = True
+        .PrintDrillIndicators = False
+        .AllowMultipleFilters = False
+        .SortUsingCustomLists = True
+        .FieldListSortAscending = False
+        .ShowValuesRow = False
+        .CalculatedMembersInFilters = False
+        .RowAxisLayout xlCompactRow
+    End With
+    With ActiveSheet.PivotTables("PivotTable1").PivotCache
+        .RefreshOnFileOpen = False
+        .MissingItemsLimit = xlMissingItemsDefault
+    End With
+    ActiveSheet.PivotTables("PivotTable1").RepeatAllLabels xlRepeatLabels
+    ActiveSheet.PivotTables("PivotTable1").AddDataField ActiveSheet.PivotTables( _
+        "PivotTable1").PivotFields("Assigned to"), "Count of Assigned to", xlCount
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("Assigned to")
+        .Orientation = xlRowField
+        .Position = 1
+    End With
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("Urgency")
+        .Orientation = xlColumnField
+        .Position = 1
+    End With
+ End Sub
