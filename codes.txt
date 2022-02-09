@@ -1,0 +1,1085 @@
+Sub Macro1()
+'
+' Macro1 Macro
+'
+
+'
+    Dim myRange As Range, shtSrc As Worksheet
+    Set myRange = Range("A1").CurrentRegion
+    
+    Worksheets("Data").Activate
+    Sheets.Add.Name = "Assigned_month"
+    Set shtSrc = Sheets("Data")
+    ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
+        shtSrc.Range("A1").CurrentRegion, Version:=7).CreatePivotTable TableDestination:= _
+        "'Assigned_month'!R3C1", TableName:="PivotTable1", DefaultVersion:=7
+    Sheets("Assigned_month").Select
+    Cells(3, 1).Select
+    With ActiveSheet.PivotTables("PivotTable1")
+        .ColumnGrand = True
+        .HasAutoFormat = True
+        .DisplayErrorString = False
+        .DisplayNullString = True
+        .EnableDrilldown = True
+        .ErrorString = ""
+        .MergeLabels = False
+        .NullString = ""
+        .PageFieldOrder = 2
+        .PageFieldWrapCount = 0
+        .PreserveFormatting = True
+        .RowGrand = True
+        .SaveData = True
+        .PrintTitles = False
+        .RepeatItemsOnEachPrintedPage = True
+        .TotalsAnnotation = False
+        .CompactRowIndent = 1
+        .InGridDropZones = False
+        .DisplayFieldCaptions = True
+        .DisplayMemberPropertyTooltips = False
+        .DisplayContextTooltips = True
+        .ShowDrillIndicators = True
+        .PrintDrillIndicators = False
+        .AllowMultipleFilters = False
+        .SortUsingCustomLists = True
+        .FieldListSortAscending = False
+        .ShowValuesRow = False
+        .CalculatedMembersInFilters = False
+        .RowAxisLayout xlCompactRow
+    End With
+       With ActiveSheet.PivotTables("PivotTable1").PivotCache
+        .RefreshOnFileOpen = False
+        .MissingItemsLimit = xlMissingItemsDefault
+    End With
+    ActiveSheet.PivotTables("PivotTable1").RepeatAllLabels xlRepeatLabels
+    ActiveSheet.PivotTables("PivotTable1").AddDataField ActiveSheet.PivotTables( _
+        "PivotTable1").PivotFields("Assigned to"), "Count of Assigned to", xlCount
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("Assigned to")
+        .Orientation = xlRowField
+        .Position = 1
+    End With
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("Priority")
+        .Orientation = xlColumnField
+        .Position = 1
+    End With
+    ActiveSheet.PivotTables("PivotTable1").CompactLayoutRowHeader = "Engineer"
+    ActiveSheet.PivotTables("PivotTable1").TableStyle2 = "PivotStyleMedium2"
+End Sub
+Sub Assignday()
+'
+' Assignday Macro
+'
+
+'
+    Worksheets("Data").Activate
+    Dim myRange As Range, shtSrc As Worksheet
+    Set myRange = Range("A1").CurrentRegion
+    Selection.AutoFilter
+    myRange.AutoFilter Field:=9, Criteria1:=2, _
+        Operator:=11, Criteria2:=0, SubField:=0
+    myRange.Select
+    Selection.Copy
+    Sheets.Add.Name = "Assigndayraw"
+    ActiveSheet.Paste
+    Application.CutCopyMode = False
+    Set shtSrc = Sheets("Assigndayraw")
+    Sheets.Add.Name = "Assign_day"
+    ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
+        shtSrc.Range("A1").CurrentRegion, Version:=7).CreatePivotTable TableDestination:= _
+        "'Assign_day'!R3C1", TableName:="PivotTable1", DefaultVersion:=7
+    Sheets("Assign_day").Select
+    Cells(3, 1).Select
+    With ActiveSheet.PivotTables("PivotTable1")
+        .ColumnGrand = True
+        .HasAutoFormat = True
+        .DisplayErrorString = False
+        .DisplayNullString = True
+        .EnableDrilldown = True
+        .ErrorString = ""
+        .MergeLabels = False
+        .NullString = ""
+        .PageFieldOrder = 2
+        .PageFieldWrapCount = 0
+        .PreserveFormatting = True
+        .RowGrand = True
+        .SaveData = True
+        .PrintTitles = False
+        .RepeatItemsOnEachPrintedPage = True
+        .TotalsAnnotation = False
+        .CompactRowIndent = 1
+        .InGridDropZones = False
+        .DisplayFieldCaptions = True
+        .DisplayMemberPropertyTooltips = False
+        .DisplayContextTooltips = True
+        .ShowDrillIndicators = True
+        .PrintDrillIndicators = False
+        .AllowMultipleFilters = False
+        .SortUsingCustomLists = True
+        .FieldListSortAscending = False
+        .ShowValuesRow = False
+        .CalculatedMembersInFilters = False
+        .RowAxisLayout xlCompactRow
+    End With
+    With ActiveSheet.PivotTables("PivotTable1").PivotCache
+        .RefreshOnFileOpen = False
+        .MissingItemsLimit = xlMissingItemsDefault
+    End With
+    ActiveSheet.PivotTables("PivotTable1").RepeatAllLabels xlRepeatLabels
+    ActiveSheet.PivotTables("PivotTable1").AddDataField ActiveSheet.PivotTables( _
+        "PivotTable1").PivotFields("Assigned to"), "Count of Assigned to", xlCount
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("Assigned to")
+        .Orientation = xlRowField
+        .Position = 1
+    End With
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("Priority")
+        .Orientation = xlColumnField
+        .Position = 1
+    End With
+    ActiveSheet.PivotTables("PivotTable1").CompactLayoutRowHeader = "Engineer"
+    ActiveSheet.PivotTables("PivotTable1").TableStyle2 = "PivotStyleMedium2"
+    
+  
+ Worksheets("Data").Activate
+ ActiveSheet.AutoFilterMode = False
+
+
+    
+End Sub
+Sub Resolvedm()
+'
+' Resolvedm Macro
+'
+
+'
+    Worksheets("Data").Activate
+    Dim myRange As Range, shtSrc As Worksheet
+    Set myRange = Range("A1").CurrentRegion
+    Selection.AutoFilter
+    myRange.AutoFilter Field:=8, Criteria1:="Resolved"
+    myRange.Select
+    Selection.Copy
+    Sheets.Add.Name = "Resolvedmonthraw"
+    ActiveSheet.Paste
+    Application.CutCopyMode = False
+    Set shtSrc = Sheets("Resolvedmonthraw")
+    Sheets.Add.Name = "Resolve_month"
+    
+    ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
+        shtSrc.Range("A1").CurrentRegion, Version:=7).CreatePivotTable TableDestination:= _
+        "'Resolve_month'!R3C1", TableName:="PivotTable1", DefaultVersion:=7
+    Sheets("Resolve_month").Select
+    Cells(3, 1).Select
+    With ActiveSheet.PivotTables("PivotTable1")
+        .ColumnGrand = True
+        .HasAutoFormat = True
+        .DisplayErrorString = False
+        .DisplayNullString = True
+        .EnableDrilldown = True
+        .ErrorString = ""
+        .MergeLabels = False
+        .NullString = ""
+        .PageFieldOrder = 2
+        .PageFieldWrapCount = 0
+        .PreserveFormatting = True
+        .RowGrand = True
+        .SaveData = True
+        .PrintTitles = False
+        .RepeatItemsOnEachPrintedPage = True
+        .TotalsAnnotation = False
+        .CompactRowIndent = 1
+        .InGridDropZones = False
+        .DisplayFieldCaptions = True
+        .DisplayMemberPropertyTooltips = False
+        .DisplayContextTooltips = True
+        .ShowDrillIndicators = True
+        .PrintDrillIndicators = False
+        .AllowMultipleFilters = False
+        .SortUsingCustomLists = True
+        .FieldListSortAscending = False
+        .ShowValuesRow = False
+        .CalculatedMembersInFilters = False
+        .RowAxisLayout xlCompactRow
+    End With
+    With ActiveSheet.PivotTables("PivotTable1").PivotCache
+        .RefreshOnFileOpen = False
+        .MissingItemsLimit = xlMissingItemsDefault
+    End With
+    ActiveSheet.PivotTables("PivotTable1").RepeatAllLabels xlRepeatLabels
+    ActiveSheet.PivotTables("PivotTable1").AddDataField ActiveSheet.PivotTables( _
+        "PivotTable1").PivotFields("Assigned to"), "Count of Assigned to", xlCount
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("Assigned to")
+        .Orientation = xlRowField
+        .Position = 1
+    End With
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("Priority")
+        .Orientation = xlColumnField
+        .Position = 1
+    End With
+    ActiveSheet.PivotTables("PivotTable1").CompactLayoutRowHeader = "Engineer"
+    ActiveSheet.PivotTables("PivotTable1").TableStyle2 = "PivotStyleMedium2"
+     Worksheets("Data").Activate
+    ActiveSheet.AutoFilterMode = False
+End Sub
+Sub Resolvedday()
+'
+' Resolvedday Macro
+'
+
+    Worksheets("Data").Activate
+    Dim myRange As Range, shtSrc As Worksheet
+    Set myRange = Range("A1").CurrentRegion
+    Selection.AutoFilter
+    myRange.AutoFilter Field:=11, Criteria1:=2, _
+        Operator:=11, Criteria2:=0, SubField:=0
+    myRange.Select
+    Selection.Copy
+    Sheets.Add.Name = "Resolved_yday_raw"
+    ActiveSheet.Paste
+    Application.CutCopyMode = False
+    Set shtSrc = Sheets("Resolved_yday_raw")
+    Sheets.Add.Name = "Resolved_day"
+    ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
+        shtSrc.Range("A1").CurrentRegion, Version:=7).CreatePivotTable _
+        TableDestination:="'Resolved_day'!R3C1", TableName:="PivotTable1", _
+        DefaultVersion:=7
+    Sheets("Resolved_day").Select
+    Cells(3, 1).Select
+    With ActiveSheet.PivotTables("PivotTable1")
+        .ColumnGrand = True
+        .HasAutoFormat = True
+        .DisplayErrorString = False
+        .DisplayNullString = True
+        .EnableDrilldown = True
+        .ErrorString = ""
+        .MergeLabels = False
+        .NullString = ""
+        .PageFieldOrder = 2
+        .PageFieldWrapCount = 0
+        .PreserveFormatting = True
+        .RowGrand = True
+        .SaveData = True
+        .PrintTitles = False
+        .RepeatItemsOnEachPrintedPage = True
+        .TotalsAnnotation = False
+        .CompactRowIndent = 1
+        .InGridDropZones = False
+        .DisplayFieldCaptions = True
+        .DisplayMemberPropertyTooltips = False
+        .DisplayContextTooltips = True
+        .ShowDrillIndicators = True
+        .PrintDrillIndicators = False
+        .AllowMultipleFilters = False
+        .SortUsingCustomLists = True
+        .FieldListSortAscending = False
+        .ShowValuesRow = False
+        .CalculatedMembersInFilters = False
+        .RowAxisLayout xlCompactRow
+    End With
+    With ActiveSheet.PivotTables("PivotTable1").PivotCache
+        .RefreshOnFileOpen = False
+        .MissingItemsLimit = xlMissingItemsDefault
+    End With
+    ActiveSheet.PivotTables("PivotTable1").RepeatAllLabels xlRepeatLabels
+    ActiveSheet.PivotTables("PivotTable1").AddDataField ActiveSheet.PivotTables( _
+        "PivotTable1").PivotFields("Assigned to"), "Count of Assigned to", xlCount
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("Assigned to")
+        .Orientation = xlRowField
+        .Position = 1
+    End With
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("Priority")
+        .Orientation = xlColumnField
+        .Position = 1
+    End With
+    ActiveSheet.PivotTables("PivotTable1").CompactLayoutRowHeader = "Engineer"
+    ActiveSheet.PivotTables("PivotTable1").TableStyle2 = "PivotStyleMedium2"
+     Worksheets("Data").Activate
+    ActiveSheet.AutoFilterMode = False
+End Sub
+
+
+
+Sub Openpending()
+'
+' Openpending Macro
+'
+
+'
+    Worksheets("Data").Activate
+    Dim myRange As Range, shtSrc As Worksheet
+    Set myRange = Range("A1").CurrentRegion
+    Selection.AutoFilter
+    myRange.AutoFilter Field:=8, Criteria1:= _
+        "Awaiting Customer"
+    myRange.Select
+    Selection.Copy
+    Sheets.Add.Name = "Openpendingraw"
+    ActiveSheet.Paste
+    Application.CutCopyMode = False
+    Set shtSrc = Sheets("Openpendingraw")
+    Sheets.Add.Name = "Open_Pending_Tickets"
+    ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
+        shtSrc.Range("A1").CurrentRegion, Version:=7).CreatePivotTable TableDestination _
+        :="'Open_Pending_Tickets'!R3C1", TableName:="PivotTable1", DefaultVersion:=7
+    Sheets("Open_Pending_Tickets").Select
+    Cells(3, 1).Select
+    With ActiveSheet.PivotTables("PivotTable1")
+        .ColumnGrand = True
+        .HasAutoFormat = True
+        .DisplayErrorString = False
+        .DisplayNullString = True
+        .EnableDrilldown = True
+        .ErrorString = ""
+        .MergeLabels = False
+        .NullString = ""
+        .PageFieldOrder = 2
+        .PageFieldWrapCount = 0
+        .PreserveFormatting = True
+        .RowGrand = True
+        .SaveData = True
+        .PrintTitles = False
+        .RepeatItemsOnEachPrintedPage = True
+        .TotalsAnnotation = False
+        .CompactRowIndent = 1
+        .InGridDropZones = False
+        .DisplayFieldCaptions = True
+        .DisplayMemberPropertyTooltips = False
+        .DisplayContextTooltips = True
+        .ShowDrillIndicators = True
+        .PrintDrillIndicators = False
+        .AllowMultipleFilters = False
+        .SortUsingCustomLists = True
+        .FieldListSortAscending = False
+        .ShowValuesRow = False
+        .CalculatedMembersInFilters = False
+        .RowAxisLayout xlCompactRow
+    End With
+    With ActiveSheet.PivotTables("PivotTable1").PivotCache
+        .RefreshOnFileOpen = False
+        .MissingItemsLimit = xlMissingItemsDefault
+    End With
+        ActiveSheet.PivotTables("PivotTable1").RepeatAllLabels xlRepeatLabels
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("State")
+        .Orientation = xlColumnField
+        .Position = 1
+    End With
+    ActiveSheet.PivotTables("PivotTable1").AddDataField ActiveSheet.PivotTables( _
+        "PivotTable1").PivotFields("Created"), "Count of Created", xlCount
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("Created")
+        .Orientation = xlRowField
+        .Position = 1
+    End With
+    ActiveSheet.PivotTables("PivotTable1").PivotFields("Created").AutoGroup
+    Worksheets("Data").Activate
+ ActiveSheet.AutoFilterMode = False
+End Sub
+
+
+Sub Priority_wise()
+'
+' Priority_wise Macro
+'
+
+'
+    Dim myRange As Range, shtSrc As Worksheet
+    Set myRange = Range("A1").CurrentRegion
+    
+    Worksheets("Openpendingraw").Activate
+    Sheets.Add.Name = "Priority_wise"
+    Set shtSrc = Sheets("Openpendingraw")
+    ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
+        shtSrc.Range("A1").CurrentRegion, Version:=7).CreatePivotTable TableDestination:= _
+        "'Priority_wise'!R3C1", TableName:="PivotTable1", DefaultVersion:=7
+    Sheets("Priority_wise").Select
+    Cells(3, 1).Select
+    With ActiveSheet.PivotTables("PivotTable1")
+        .ColumnGrand = True
+        .HasAutoFormat = True
+        .DisplayErrorString = False
+        .DisplayNullString = True
+        .EnableDrilldown = True
+        .ErrorString = ""
+        .MergeLabels = False
+        .NullString = ""
+        .PageFieldOrder = 2
+        .PageFieldWrapCount = 0
+        .PreserveFormatting = True
+        .RowGrand = True
+        .SaveData = True
+        .PrintTitles = False
+        .RepeatItemsOnEachPrintedPage = True
+        .TotalsAnnotation = False
+        .CompactRowIndent = 1
+        .InGridDropZones = False
+        .DisplayFieldCaptions = True
+        .DisplayMemberPropertyTooltips = False
+        .DisplayContextTooltips = True
+        .ShowDrillIndicators = True
+        .PrintDrillIndicators = False
+        .AllowMultipleFilters = False
+        .SortUsingCustomLists = True
+        .FieldListSortAscending = False
+        .ShowValuesRow = False
+        .CalculatedMembersInFilters = False
+        .RowAxisLayout xlCompactRow
+    End With
+    With ActiveSheet.PivotTables("PivotTable1").PivotCache
+        .RefreshOnFileOpen = False
+        .MissingItemsLimit = xlMissingItemsDefault
+    End With
+    ActiveSheet.PivotTables("PivotTable1").RepeatAllLabels xlRepeatLabels
+    ActiveSheet.PivotTables("PivotTable1").AddDataField ActiveSheet.PivotTables( _
+        "PivotTable1").PivotFields("Priority"), "Count of Priority", xlCount
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("Priority")
+        .Orientation = xlRowField
+        .Position = 1
+    End With
+    ActiveSheet.PivotTables("PivotTable1").CompactLayoutRowHeader = "Priority"
+    ActiveSheet.PivotTables("PivotTable1").DataPivotField.PivotItems( _
+        "Count of Priority").Caption = "Total Count"
+    ActiveSheet.PivotTables("PivotTable1").TableStyle2 = "PivotStyleMedium9"
+End Sub
+
+
+
+Sub Engineerwise()
+'
+' Engineerwise Macro
+'
+
+'
+    Worksheets("Openpendingraw").Activate
+    Dim myRange As Range, shtSrc As Worksheet
+    Set myRange = Range("A1").CurrentRegion
+    
+    
+    Sheets.Add.Name = "Engineer_wise"
+    Set shtSrc = Sheets("Openpendingraw")
+    ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
+        shtSrc.Range("A1").CurrentRegion, Version:=7).CreatePivotTable TableDestination:= _
+        "'Engineer_wise'!R3C1", TableName:="PivotTable1", DefaultVersion:=7
+    Sheets("Engineer_wise").Select
+    Cells(3, 1).Select
+    With ActiveSheet.PivotTables("PivotTable1")
+        .ColumnGrand = True
+        .HasAutoFormat = True
+        .DisplayErrorString = False
+        .DisplayNullString = True
+        .EnableDrilldown = True
+        .ErrorString = ""
+        .MergeLabels = False
+        .NullString = ""
+        .PageFieldOrder = 2
+        .PageFieldWrapCount = 0
+        .PreserveFormatting = True
+        .RowGrand = True
+        .SaveData = True
+        .PrintTitles = False
+        .RepeatItemsOnEachPrintedPage = True
+        .TotalsAnnotation = False
+        .CompactRowIndent = 1
+        .InGridDropZones = False
+        .DisplayFieldCaptions = True
+        .DisplayMemberPropertyTooltips = False
+        .DisplayContextTooltips = True
+        .ShowDrillIndicators = True
+        .PrintDrillIndicators = False
+        .AllowMultipleFilters = False
+        .SortUsingCustomLists = True
+        .FieldListSortAscending = False
+        .ShowValuesRow = False
+        .CalculatedMembersInFilters = False
+        .RowAxisLayout xlCompactRow
+    End With
+    With ActiveSheet.PivotTables("PivotTable1").PivotCache
+        .RefreshOnFileOpen = False
+        .MissingItemsLimit = xlMissingItemsDefault
+    End With
+    ActiveSheet.PivotTables("PivotTable1").RepeatAllLabels xlRepeatLabels
+    ActiveSheet.PivotTables("PivotTable1").AddDataField ActiveSheet.PivotTables( _
+        "PivotTable1").PivotFields("Assigned to"), "Count of Assigned to", xlCount
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("State")
+        .Orientation = xlColumnField
+        .Position = 1
+        End With
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("Assigned to")
+        .Orientation = xlRowField
+        .Position = 1
+    End With
+    ActiveSheet.PivotTables("PivotTable1").CompactLayoutRowHeader = "Engineer"
+    ActiveSheet.PivotTables("PivotTable1").TableStyle2 = "PivotStyleDark2"
+    
+End Sub
+
+
+
+
+
+Sub PendingTicketTrend()
+'
+' PendingTicketTrend Macro
+'
+
+'
+    Worksheets("OpenPendingraw").Activate
+    Dim myRange As Range, shtSrc As Worksheet, myRange3 As Range
+    Set myRange = Range("A1").CurrentRegion
+    Sheets.Add.Name = "PendingTicketTrend_count"
+    Set shtSrc = Sheets("OpenPendingraw")
+    ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
+        shtSrc.Range("A1").CurrentRegion, Version:=7).CreatePivotTable TableDestination:= _
+        "'PendingTicketTrend_count'!R3C1", TableName:="PivotTable1", DefaultVersion:=7
+    Sheets("PendingTicketTrend_count").Select
+    Cells(3, 1).Select
+    With ActiveSheet.PivotTables("PivotTable1")
+        .ColumnGrand = True
+        .HasAutoFormat = True
+        .DisplayErrorString = False
+        .DisplayNullString = True
+        .EnableDrilldown = True
+        .ErrorString = ""
+        .MergeLabels = False
+        .NullString = ""
+        .PageFieldOrder = 2
+        .PageFieldWrapCount = 0
+        .PreserveFormatting = True
+        .RowGrand = True
+        .SaveData = True
+        .PrintTitles = False
+        .RepeatItemsOnEachPrintedPage = True
+        .TotalsAnnotation = False
+        .CompactRowIndent = 1
+        .InGridDropZones = False
+        .DisplayFieldCaptions = True
+        .DisplayMemberPropertyTooltips = False
+        .DisplayContextTooltips = True
+        .ShowDrillIndicators = True
+        .PrintDrillIndicators = False
+        .AllowMultipleFilters = False
+        .SortUsingCustomLists = True
+        .FieldListSortAscending = False
+        .ShowValuesRow = False
+        .CalculatedMembersInFilters = False
+        .RowAxisLayout xlCompactRow
+    End With
+    With ActiveSheet.PivotTables("PivotTable1").PivotCache
+        .RefreshOnFileOpen = False
+        .MissingItemsLimit = xlMissingItemsDefault
+    End With
+    ActiveSheet.PivotTables("PivotTable1").RepeatAllLabels xlRepeatLabels
+    ActiveSheet.PivotTables("PivotTable1").AddDataField ActiveSheet.PivotTables( _
+        "PivotTable1").PivotFields("Short description"), "Count of Short description", _
+        xlCount
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("Short description")
+        .Orientation = xlRowField
+        .Position = 1
+    End With
+    
+    ActiveSheet.PivotTables("PivotTable1").CompactLayoutRowHeader = "Trend"
+    ActiveSheet.PivotTables("PivotTable1").DataPivotField.PivotItems( _
+        "Count of Short description").Caption = "Grand Total"
+    ActiveSheet.PivotTables("PivotTable1").TableStyle2 = "PivotStyleMedium16"
+    Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlInsideVertical)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlInsideHorizontal)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    Range("A3").Select
+    ActiveSheet.Shapes.AddChart2(251, xl3DPie).Select
+    Set myRange3 = Range("A3").CurrentRegion
+    ActiveChart.SetSourceData Source:=myRange3
+    ActiveChart.FullSeriesCollection(1).Select
+    ActiveChart.SetElement (msoElementDataLabelCallout)
+    ActiveChart.FullSeriesCollection(1).DataLabels.Select
+    ActiveChart.ChartArea.Select
+End Sub
+
+
+
+
+Sub Ticket_Trend_yesterday()
+'
+' Ticket_Trend_yesterday Macro
+'
+
+'
+    Worksheets("Data").Activate
+    Dim myRange As Range, shtSrc As Worksheet, myRange3 As Range
+    Set myRange = Range("A1").CurrentRegion
+    Selection.AutoFilter
+    myRange.AutoFilter Field:=9, Criteria1:=2, _
+        Operator:=11, Criteria2:=0, SubField:=0
+    myRange.Select
+    Selection.Copy
+    Sheets.Add.Name = "tickettrend_yesterday_raw"
+    ActiveSheet.Paste
+    Application.CutCopyMode = False
+    Set shtSrc = Sheets("tickettrend_yesterday_raw")
+    Sheets.Add.Name = "Ticket_Trend_yesterday"
+    ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
+        shtSrc.Range("A1").CurrentRegion, Version:=7).CreatePivotTable _
+        TableDestination:="'Ticket_Trend_yesterday'!R3C1", TableName:="PivotTable1", _
+        DefaultVersion:=7
+    Sheets("Ticket_Trend_yesterday").Select
+    Cells(3, 1).Select
+    With ActiveSheet.PivotTables("PivotTable1")
+        .ColumnGrand = True
+        .HasAutoFormat = True
+        .DisplayErrorString = False
+        .DisplayNullString = True
+        .EnableDrilldown = True
+        .ErrorString = ""
+        .MergeLabels = False
+        .NullString = ""
+        .PageFieldOrder = 2
+        .PageFieldWrapCount = 0
+        .PreserveFormatting = True
+        .RowGrand = True
+        .SaveData = True
+        .PrintTitles = False
+        .RepeatItemsOnEachPrintedPage = True
+        .TotalsAnnotation = False
+        .CompactRowIndent = 1
+        .InGridDropZones = False
+        .DisplayFieldCaptions = True
+        .DisplayMemberPropertyTooltips = False
+        .DisplayContextTooltips = True
+        .ShowDrillIndicators = True
+        .PrintDrillIndicators = False
+        .AllowMultipleFilters = False
+        .SortUsingCustomLists = True
+        .FieldListSortAscending = False
+        .ShowValuesRow = False
+        .CalculatedMembersInFilters = False
+        .RowAxisLayout xlCompactRow
+    End With
+    With ActiveSheet.PivotTables("PivotTable1").PivotCache
+        .RefreshOnFileOpen = False
+        .MissingItemsLimit = xlMissingItemsDefault
+    End With
+    ActiveSheet.PivotTables("PivotTable1").RepeatAllLabels xlRepeatLabels
+    ActiveSheet.PivotTables("PivotTable1").AddDataField ActiveSheet.PivotTables( _
+        "PivotTable1").PivotFields("Short description"), "Count of Short description", _
+        xlCount
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("Short description")
+        .Orientation = xlRowField
+        .Position = 1
+    End With
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("State")
+        .Orientation = xlColumnField
+        .Position = 1
+    End With
+    ActiveSheet.PivotTables("PivotTable1").CompactLayoutRowHeader = "Trend"
+    ActiveSheet.PivotTables("PivotTable1").TableStyle2 = "PivotStyleMedium9"
+    ActiveSheet.Shapes.AddChart2(251, xl3DPie).Select
+    Set myRange3 = Range("A3").CurrentRegion
+    ActiveChart.SetSourceData Source:=myRange3
+    ActiveSheet.Shapes("Chart 1").IncrementLeft 111
+    ActiveSheet.Shapes("Chart 1").IncrementTop 3.6
+    ActiveChart.FullSeriesCollection(1).Select
+    ActiveChart.SetElement (msoElementDataLabelCallout)
+    ActiveChart.ChartArea.Select
+    Worksheets("Data").Activate
+    ActiveSheet.AutoFilterMode = False
+End Sub
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    Windows("workingdatas.xlsm").Activate
+    Sheets("Sheet10").Select
+    Sheets("Sheet10").Name = "Openpending"
+    Sheets.Add After:=ActiveSheet
+    Sheets("Sheet11").Select
+    Sheets("Sheet11").Name = "Prioritywise"
+    Sheets("Openpendingraw").Select
+    Sheets.Add
+    ActiveWorkbook.Worksheets("Openpending").PivotTables("PivotTable4").PivotCache. _
+        CreatePivotTable TableDestination:="Sheet12!R3C1", TableName:="PivotTable5" _
+        , DefaultVersion:=7
+    Sheets("Sheet12").Select
+    Cells(3, 1).Select
+    With ActiveSheet.PivotTables("PivotTable5")
+        .ColumnGrand = True
+        .HasAutoFormat = True
+        .DisplayErrorString = False
+        .DisplayNullString = True
+        .EnableDrilldown = True
+        .ErrorString = ""
+        .MergeLabels = False
+        .NullString = ""
+        .PageFieldOrder = 2
+        .PageFieldWrapCount = 0
+        .PreserveFormatting = True
+        .RowGrand = True
+        .SaveData = True
+        .PrintTitles = False
+        .RepeatItemsOnEachPrintedPage = True
+        .TotalsAnnotation = False
+        .CompactRowIndent = 1
+        .InGridDropZones = False
+        .DisplayFieldCaptions = True
+        .DisplayMemberPropertyTooltips = False
+        .DisplayContextTooltips = True
+        .ShowDrillIndicators = True
+        .PrintDrillIndicators = False
+        .AllowMultipleFilters = False
+        .SortUsingCustomLists = True
+        .FieldListSortAscending = False
+        .ShowValuesRow = False
+        .CalculatedMembersInFilters = False
+        .RowAxisLayout xlCompactRow
+    End With
+    With ActiveSheet.PivotTables("PivotTable5").PivotCache
+        .RefreshOnFileOpen = False
+        .MissingItemsLimit = xlMissingItemsDefault
+    End With
+    ActiveSheet.PivotTables("PivotTable5").RepeatAllLabels xlRepeatLabels
+    Sheets("Sheet12").Select
+    Windows( _
+        "SNOW Current Pending tickets with Problem Trend - 10th-Nov-2021 4.00 pm.xlsx") _
+        .Activate
+    Sheets("Priority_Wise").Select
+    Windows("workingdatas.xlsm").Activate
+    Sheets("Sheet12").Select
+    Sheets("Sheet12").Name = "pwise"
+    Range("B5").Select
+    Windows( _
+        "SNOW Current Pending tickets with Problem Trend - 10th-Nov-2021 4.00 pm.xlsx") _
+        .Activate
+    Windows("workingdatas.xlsm").Activate
+    ActiveSheet.PivotTables("PivotTable5").AddDataField ActiveSheet.PivotTables( _
+        "PivotTable5").PivotFields("Priority"), "Count of Priority", xlCount
+    With ActiveSheet.PivotTables("PivotTable5").PivotFields("Priority")
+        .Orientation = xlRowField
+        .Position = 1
+    End With
+    Windows( _
+        "SNOW Current Pending tickets with Problem Trend - 10th-Nov-2021 4.00 pm.xlsx") _
+        .Activate
+    Windows("workingdatas.xlsm").Activate
+    Windows( _
+        "SNOW Current Pending tickets with Problem Trend - 10th-Nov-2021 4.00 pm.xlsx") _
+        .Activate
+    Sheets("Overall_PendingEngineer_Wise").Select
+    Windows("workingdatas.xlsm").Activate
+    Sheets.Add After:=ActiveSheet
+    Sheets("Sheet13").Select
+    Sheets("Sheet13").Name = "1"
+    Range("H27").Select
+    Sheets("Openpendingraw").Select
+    Sheets.Add
+    ActiveWorkbook.Worksheets("Openpending").PivotTables("PivotTable4").PivotCache. _
+        CreatePivotTable TableDestination:="Sheet14!R3C1", TableName:="PivotTable6" _
+        , DefaultVersion:=7
+    Sheets("Sheet14").Select
+    Cells(3, 1).Select
+    With ActiveSheet.PivotTables("PivotTable6")
+        .ColumnGrand = True
+        .HasAutoFormat = True
+        .DisplayErrorString = False
+        .DisplayNullString = True
+        .EnableDrilldown = True
+        .ErrorString = ""
+        .MergeLabels = False
+        .NullString = ""
+        .PageFieldOrder = 2
+        .PageFieldWrapCount = 0
+        .PreserveFormatting = True
+        .RowGrand = True
+        .SaveData = True
+        .PrintTitles = False
+        .RepeatItemsOnEachPrintedPage = True
+        .TotalsAnnotation = False
+        .CompactRowIndent = 1
+        .InGridDropZones = False
+        .DisplayFieldCaptions = True
+        .DisplayMemberPropertyTooltips = False
+        .DisplayContextTooltips = True
+        .ShowDrillIndicators = True
+        .PrintDrillIndicators = False
+        .AllowMultipleFilters = False
+        .SortUsingCustomLists = True
+        .FieldListSortAscending = False
+        .ShowValuesRow = False
+        .CalculatedMembersInFilters = False
+        .RowAxisLayout xlCompactRow
+    End With
+    With ActiveSheet.PivotTables("PivotTable6").PivotCache
+        .RefreshOnFileOpen = False
+        .MissingItemsLimit = xlMissingItemsDefault
+    End With
+    ActiveSheet.PivotTables("PivotTable6").RepeatAllLabels xlRepeatLabels
+    Sheets("Sheet14").Select
+    ActiveSheet.PivotTables("PivotTable6").AddDataField ActiveSheet.PivotTables( _
+        "PivotTable6").PivotFields("Assigned to"), "Count of Assigned to", xlCount
+    With ActiveSheet.PivotTables("PivotTable6").PivotFields("Assigned to")
+        .Orientation = xlRowField
+        .Position = 1
+    End With
+    Windows( _
+        "SNOW Current Pending tickets with Problem Trend - 10th-Nov-2021 4.00 pm.xlsx") _
+        .Activate
+    Windows("workingdatas.xlsm").Activate
+    With ActiveSheet.PivotTables("PivotTable6").PivotFields("State")
+        .Orientation = xlColumnField
+        .Position = 1
+    End With
+End Sub
+
+_______________________
+
+Sub letstestpivotrc()
+
+ Dim myRange As Range
+Set myRange = Range("A1").CurrentRegion
+
+    Worksheets("Novdata").Activate
+    Selection.AutoFilter
+    ActiveSheet.myRange.AutoFilter Field:=8, Criteria1:= _
+        "Awaiting Customer"
+    myRange.Select
+    Selection.Copy
+    Sheets.Add After:=ActiveSheet
+    rawdata = ActiveSheet.Name
+    Sheets(rawdata).Name = "Openpendingyes"
+    Range("A1").Select
+    ActiveSheet.Paste
+    Application.CutCopyMode = False
+    Sheets.Add
+    rawdata1 = ActiveSheet.Name
+    Sheets(rawdata).Name = "Openpendingyes1"
+    ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
+        "'Openpendingyes'!'rngPivot'", Version:=7).CreatePivotTable TableDestination _
+        :="'Openpendingyes1'!R3C1", TableName:="PivotTable4", DefaultVersion:=7
+    Sheets("Openpendingyes1").Select
+    Cells(3, 1).Select
+    With ActiveSheet.PivotTables("PivotTable4")
+        .ColumnGrand = True
+        .HasAutoFormat = True
+        .DisplayErrorString = False
+        .DisplayNullString = True
+        .EnableDrilldown = True
+        .ErrorString = ""
+        .MergeLabels = False
+        .NullString = ""
+        .PageFieldOrder = 2
+        .PageFieldWrapCount = 0
+        .PreserveFormatting = True
+        .RowGrand = True
+        .SaveData = True
+        .PrintTitles = False
+        .RepeatItemsOnEachPrintedPage = True
+        .TotalsAnnotation = False
+        .CompactRowIndent = 1
+        .InGridDropZones = False
+        .DisplayFieldCaptions = True
+        .DisplayMemberPropertyTooltips = False
+        .DisplayContextTooltips = True
+        .ShowDrillIndicators = True
+        .PrintDrillIndicators = False
+        .AllowMultipleFilters = False
+        .SortUsingCustomLists = True
+        .FieldListSortAscending = False
+        .ShowValuesRow = False
+        .CalculatedMembersInFilters = False
+        .RowAxisLayout xlCompactRow
+    End With
+    With ActiveSheet.PivotTables("PivotTable4").PivotCache
+        .RefreshOnFileOpen = False
+        .MissingItemsLimit = xlMissingItemsDefault
+    End With
+
+
+
+Sub Openpending()
+'
+' Openpending Macro
+'
+
+'
+    Worksheets("Data").Activate
+    Dim myRange As Range, shtSrc As Worksheet
+    Set myRange = Range("A1").CurrentRegion
+    Selection.AutoFilter
+    myRange.AutoFilter Field:=8, Criteria1:= _
+        "Awaiting Customer"
+    myRange.Select
+    Selection.Copy
+    Sheets.Add.Name = "Openpendingraw"
+    ActiveSheet.Paste
+    Application.CutCopyMode = False
+    Set shtSrc = Sheets("Openpendingraw")
+    Sheets.Add.Name = "Open_Pending_Tickets"
+    ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
+        shtSrc.Range("A1").CurrentRegion, Version:=7).CreatePivotTable TableDestination _
+        :="'Open_Pending_Tickets'!R3C1", TableName:="PivotTable1", DefaultVersion:=7
+    Sheets("Open_Pending_Tickets").Select
+    Cells(3, 1).Select
+    With ActiveSheet.PivotTables("PivotTable1")
+        .ColumnGrand = True
+        .HasAutoFormat = True
+        .DisplayErrorString = False
+        .DisplayNullString = True
+        .EnableDrilldown = True
+        .ErrorString = ""
+        .MergeLabels = False
+        .NullString = ""
+        .PageFieldOrder = 2
+        .PageFieldWrapCount = 0
+        .PreserveFormatting = True
+        .RowGrand = True
+        .SaveData = True
+        .PrintTitles = False
+        .RepeatItemsOnEachPrintedPage = True
+        .TotalsAnnotation = False
+        .CompactRowIndent = 1
+        .InGridDropZones = False
+        .DisplayFieldCaptions = True
+        .DisplayMemberPropertyTooltips = False
+        .DisplayContextTooltips = True
+        .ShowDrillIndicators = True
+        .PrintDrillIndicators = False
+        .AllowMultipleFilters = False
+        .SortUsingCustomLists = True
+        .FieldListSortAscending = False
+        .ShowValuesRow = False
+        .CalculatedMembersInFilters = False
+        .RowAxisLayout xlCompactRow
+    End With
+    With ActiveSheet.PivotTables("PivotTable1").PivotCache
+        .RefreshOnFileOpen = False
+        .MissingItemsLimit = xlMissingItemsDefault
+    End With
+        ActiveSheet.PivotTables("PivotTable1").RepeatAllLabels xlRepeatLabels
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("State")
+        .Orientation = xlColumnField
+        .Position = 1
+    End With
+    ActiveSheet.PivotTables("PivotTable1").AddDataField ActiveSheet.PivotTables( _
+        "PivotTable1").PivotFields("Created"), "Count of Created", xlCount
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("Created")
+        .Orientation = xlRowField
+        .Position = 1
+    End With
+    ActiveSheet.PivotTables("PivotTable1").PivotFields("Created").AutoGroup
+    Worksheets("Data").Activate
+ ActiveSheet.AutoFilterMode = False
+End Sub
+
+
+
+
+Sub Priority_wise()
+'
+' Priority_wise Macro
+'
+
+'
+    Dim myRange As Range, shtSrc As Worksheet
+    Set myRange = Range("A1").CurrentRegion
+    
+    Worksheets("Openpendingraw").Activate
+    Sheets.Add.Name = "Priority_wise"
+    Set shtSrc = Sheets("Openpendingraw")
+    ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
+        shtSrc.Range("A1").CurrentRegion, Version:=7).CreatePivotTable TableDestination:= _
+        "'Priority_wise'!R3C1", TableName:="PivotTable1", DefaultVersion:=7
+    Sheets("Priority_wise").Select
+    Cells(3, 1).Select
+    With ActiveSheet.PivotTables("PivotTable1")
+        .ColumnGrand = True
+        .HasAutoFormat = True
+        .DisplayErrorString = False
+        .DisplayNullString = True
+        .EnableDrilldown = True
+        .ErrorString = ""
+        .MergeLabels = False
+        .NullString = ""
+        .PageFieldOrder = 2
+        .PageFieldWrapCount = 0
+        .PreserveFormatting = True
+        .RowGrand = True
+        .SaveData = True
+        .PrintTitles = False
+        .RepeatItemsOnEachPrintedPage = True
+        .TotalsAnnotation = False
+        .CompactRowIndent = 1
+        .InGridDropZones = False
+        .DisplayFieldCaptions = True
+        .DisplayMemberPropertyTooltips = False
+        .DisplayContextTooltips = True
+        .ShowDrillIndicators = True
+        .PrintDrillIndicators = False
+        .AllowMultipleFilters = False
+        .SortUsingCustomLists = True
+        .FieldListSortAscending = False
+        .ShowValuesRow = False
+        .CalculatedMembersInFilters = False
+        .RowAxisLayout xlCompactRow
+    End With
+    With ActiveSheet.PivotTables("PivotTable1").PivotCache
+        .RefreshOnFileOpen = False
+        .MissingItemsLimit = xlMissingItemsDefault
+    End With
+    ActiveSheet.PivotTables("PivotTable1").RepeatAllLabels xlRepeatLabels
+    ActiveSheet.PivotTables("PivotTable1").AddDataField ActiveSheet.PivotTables( _
+        "PivotTable1").PivotFields("Priority"), "Count of Priority", xlCount
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("Priority")
+        .Orientation = xlRowField
+        .Position = 1
+    End With
+    ActiveSheet.PivotTables("PivotTable1").CompactLayoutRowHeader = "Priority"
+    ActiveSheet.PivotTables("PivotTable1").DataPivotField.PivotItems( _
+        "Count of Priority").Caption = "Total Count"
+    ActiveSheet.PivotTables("PivotTable1").TableStyle2 = "PivotStyleMedium9"
+End Sub
