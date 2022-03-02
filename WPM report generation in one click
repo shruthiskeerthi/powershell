@@ -1,0 +1,102 @@
+Sub Final()
+    Dim myRange As Range, shtSrc As Worksheet, myRange3 As Range, myRange4 As Range, myRange5 As Range
+    Dim a As Long, i As Long, MTTR As Long
+    
+    'Previous Carry Forward
+
+    lr1 = ThisWorkbook.Sheets("last week").Cells(Rows.count, 1).End(xlUp).Row
+    lr = lr1 - 1
+    Sheets("Weekly Metrics").Range("D2").Value = lr
+    
+    'Total Received, Total Responded,Responded Within SLA
+
+    lr2 = ThisWorkbook.Sheets("this week").Cells(Rows.count, 1).End(xlUp).Row
+    lr3 = lr2 - 1
+    Sheets("Weekly Metrics").Range("D3").Value = lr3
+    Sheets("Weekly Metrics").Range("D4").Value = lr3
+    Sheets("Weekly Metrics").Range("D5").Value = lr3
+    
+    'Total Resolved, Resolved Within SLA
+
+    Sheets("last week").Select
+    Set myRange = Range("A1").CurrentRegion
+    Selection.AutoFilter
+    myRange.AutoFilter Field:=4, Criteria1:="resolved"
+    'Rows("1:1").Select
+    'Selection.EntireRow.Hidden = True
+    myRange.Select
+    Selection.Copy
+    Sheets.Add.Name = "Resolved_count"
+    ActiveSheet.Paste
+    'ActiveCell.Offset(9, 0).Range("A1").Select
+    Sheets("this week").Select
+    Application.CutCopyMode = False
+    Set myRange3 = Range("A1").CurrentRegion
+    Selection.AutoFilter
+    myRange3.AutoFilter Field:=4, Criteria1:="resolved"
+    
+    'hiding header
+    
+    Rows("1:1").Select
+    Selection.EntireRow.Hidden = True
+    
+    myRange3.Select
+    Selection.Copy Sheets("Resolved_count").Range("A1048576").End(xlUp).Offset(1, 0)
+    lr4 = ThisWorkbook.Sheets("Resolved_count").Cells(Rows.count, 1).End(xlUp).Row
+    lr5 = lr4 - 1
+    Sheets("last week").Select
+    ActiveSheet.AutoFilterMode = False
+    
+    'unhide header
+    
+    Worksheets("this week").Activate
+    Rows("1:1").Select
+    'Selection.EntireRow.Hidden = True
+    Selection.EntireRow.Hidden = False
+    Selection.AutoFilter
+    
+    Sheets("Weekly Metrics").Range("D6").Value = lr5
+    Sheets("Weekly Metrics").Range("D7").Value = lr5
+    
+    
+    'open at the end
+    
+    Sheets("this week").Select
+    Set myRange4 = Range("A1").CurrentRegion
+    Selection.AutoFilter
+    myRange4.AutoFilter Field:=4, Criteria1:="updated"
+    myRange4.Select
+    Selection.Copy
+    Sheets.Add.Name = "openatthend"
+    ActiveSheet.Paste
+    lr6 = ThisWorkbook.Sheets("openatthend").Cells(Rows.count, 1).End(xlUp).Row
+    lr7 = lr6 - 1
+    Sheets("Weekly Metrics").Range("D8").Value = lr7
+    Sheets("this week").Select
+    ActiveSheet.AutoFilterMode = False
+    
+    
+    'Resolution effort
+    lastRow = Worksheets("Resolved_count").Cells(Rows.count, 1).End(xlUp).Row
+    Sheets("Resolved_count").Select
+    Application.CutCopyMode = False
+    Range("P2").Select
+    ActiveCell.FormulaR1C1 = "=(RC[-7]-RC[-14])*1440"
+    Selection.AutoFill Destination:=Range("P2:P" & Range("E" & Rows.count).End(xlUp).Row)
+    Range(Selection, Selection.End(xlDown)).Select
+    a = 0
+For i = lastRow To 2 Step by - 1
+
+a = a + Worksheets("Resolved_count").Cells(i, 16).Value
+
+Next
+
+Worksheets("Resolved_count").Cells(lastRow + 1, 16) = a
+Sheets("Weekly Metrics").Range("D10").Value = a
+
+'MTTR
+
+MTTR = a / lr5
+Sheets("Weekly Metrics").Range("D12").Value = MTTR
+    
+End Sub
