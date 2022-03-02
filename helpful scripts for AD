@@ -1,0 +1,126 @@
+Powershell
+Find Specific AD Users Last Logon Time Using PowerShell
+
+You can easily find the last logon time of any specific user using PowerShell.
+
+The basic syntax of finding users last logon time is shown below:
+
+Get-ADUser -Identity username -Properties "LastLogonDate"
+
+For example, you can find the last logon time of user hitesh and simac by running the following command in the PowerShell:
+
+Get-ADUser -Identity "hitesh" -Properties "LastLogonDate"
+Get-ADUser -Identity "simac" -Properties "LastLogonDate"
+
+You should see the users last logon time information in the following screen:
+
+Find All AD Users Last Logon Time Using PowerShell
+
+If you are managing a large organization, it can be a very time-consuming process to find each users’ last logon time one by one.
+
+In this case, you can create a PowerShell script to generate all user’s last logon report automatically.
+
+You can create the PowerShell script by following the below steps:
+
+1. Open your notepad and add the following codes:
+
+Get-ADUser -Filter {enabled -eq $true} -Properties LastLogonTimeStamp |
+Select-Object Name,@{Name="Stamp"; Expression={[DateTime]::FromFileTime($_.lastLogonTimestamp).ToString('yyyy-MM-dd_hh:mm:ss')}}
+
+2. Click on the Save as option to save the file
+
+3. Type a name for the script as lastlogon.ps1
+
+4. Click on the Save button to save the file.
+
+5. Right click on the lastlogon.ps1 PowerShell script and click on the Edit button as shown below:
+
+6. Now, click on the green button to run the script. You should see the following screen if it ran successfully:
+
+Save the Generated Report
+
+If you want to save the generated report in the CSV file, run the following script in the PowerShell:
+
+Get-ADUser -Filter {enabled -eq $true} -Properties LastLogonTimeStamp |
+Select-Object Name,@{Name="Stamp"; Expression={[DateTime]::FromFileTime($_.lastLogonTimestamp).ToString('yyyy-MM-dd_hh:mm:ss')}} | Export-CSV = -Path "C:\alluser_reports.csv"
+Save User Metadata with Script
+
+If you want to generate all user’s last logon report with other useful information like, OU and Domain controller name.
+
+Then, you can create the PowerShell script by following the below steps:
+
+1. Open your notepad and add the following codes:
+
+Import-Module ActiveDirectory
+function Get-LastLogonEvents
+{
+$dcs = Get-ADDomainController -Filter {Name -like "*"}
+$users = Get-ADUser -Filter *
+$time = 0
+foreach($user in $users)
+{
+foreach($dc in $dcs)
+{
+$hostname = $dc.HostName
+$currentUser = Get-ADUser $user.SamAccountName | Get-ADObject -Server $hostname -Properties lastLogon
+if($currentUser.LastLogon -gt $time)
+{
+$time = $currentUser.LastLogon
+}
+$dt = [DateTime]::FromFileTime($time)
+Write-Host $currentUser "last logged on at:" $dt
+$time = 0
+}
+}
+}
+Get-LastLogonEvents
+
+2. Click on the Save as option to save the file.
+
+3. Type a name for the script as lastlogon_details.ps1
+
+4. Click on the Save button to save the file.
+
+5. Now, right click on the PowerShell script and click on the Edit button as shown below:
+
+6. Now, click on the green button to run the script. You should see the following screen if it ran successfully:
+
+If you want to save the generated report in the CSV file, run the following script in the PowerShell:
+
+Import-Module ActiveDirectory
+function Get-LastLogonEvents
+{
+$dcs = Get-ADDomainController -Filter {Name -like "*"}
+$users = Get-ADUser -Filter *
+$time = 0
+foreach($user in $users)
+{
+foreach($dc in $dcs)
+{
+$hostname = $dc.HostName
+$currentUser = Get-ADUser $user.SamAccountName | Get-ADObject -Server $hostname -Properties lastLogon
+if($currentUser.LastLogon -gt $time)
+{
+$time = $currentUser.LastLogon
+}
+$dt = [DateTime]::FromFileTime($time)
+Write-Host $currentUser "last logged on at:" $dt
+$time = 0
+}
+}
+}
+Get-LastLogonEvents | Export-CSV = -Path "C:\alluser_reports_brief.csv"
+3. Find AD Users Last Logon Time Using the Attribute Editor
+
+You can also find a Single Users Last logon time using the Active Directory Attribute Editor.
+
+You can follow the below steps below to find the last logon time of user named jayesh with the Active Directory Attribute Editor.
+
+1. Open the Active Directory Users and Computer.
+
+2. Click on the View => Advanced Features as shown below:
+
+3. Click on the Education OU, Right-click on the jayesh user and click on the Properties as shown below:
+
+4. Click on the Attribute Editor tab and scroll down to see the last logon time as shown below:
+
