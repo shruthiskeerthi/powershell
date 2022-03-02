@@ -1,0 +1,13 @@
+$a=read-host -Prompt "enter the value of a"
+if(($a%4 -eq 0) -and ($a%100 -ne 0)) 
+{
+   write-host "$a leap year"
+}
+elseif (($a%4 -eq 0) -and ($a%100 -eq 0) -and ($a%400 -eq 0))
+{
+   write-host "$a is leap year"
+}
+else
+{
+   write-host "$a is not leap year"
+}
