@@ -1,0 +1,9 @@
+set-location $env:systemroot
+
+
+
+#forex: if you are in this location
+ps: \\mcs-nemp000003.co.ihc.com\c$:  
+and want to go back to local pc 
+
+use this script
